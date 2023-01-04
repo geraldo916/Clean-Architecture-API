@@ -1,9 +1,10 @@
+import User from "../Entities/User";
+import UserRepository from "../repositories/UserRepository";
+
 export default class UpdateUser {
-    constructor(){
+    constructor(private readonly userRepository:UserRepository){}
 
-    }
-
-    update():void{
-        
+    update(user:User):void{
+        this.userRepository.update(user)
     }
 }

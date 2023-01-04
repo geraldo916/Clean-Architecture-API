@@ -1,6 +1,7 @@
 import UserRepositoryMemory from "../../infra/repositories/userRepositoryMemory"
 import GetUser from "../usecases/GetUser";
 import SaveUser from "../usecases/SaveUser"
+import UpdateUser from "../usecases/UpdateUser";
 import User from "./User";
 
 describe("ChackUseCasesUser",()=>{
@@ -24,4 +25,14 @@ describe("ChackUseCasesUser",()=>{
         const users = await getUser.getUsers()
         expect(users.length).toBe(1);
     })
+
+    it("Should update an user with new elements",async ()=>{
+        const user = new UpdateUser(userReposiroty);
+        const newUser = new User(2,"Samuel Albino","geraldo00","geraldo@gmail.com","geraldo916", 2);
+        const userFound = await getUser.getUserById(2)
+        expect(userFound.name).toBe("geraldo munhika")
+        user.update(newUser);
+        expect(userFound.name).toBe("Samuel Albino")
+    })
+
 })

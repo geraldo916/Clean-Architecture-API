@@ -8,11 +8,11 @@ export default class GetUser{
         this.userRepository = userRepository;
     }
 
-    getUsers():Promise<User[]>{
-        return Promise.resolve(this.userRepository.myUsers);
+    async getUsers():Promise<User[]>{
+        return await this.userRepository.getAllUsers();
     }
-    getUserById(id:number):Promise<User>{
-        return Promise.resolve(this.userRepository.myUsers.find(user => user._id === id));
+    async getUserById(id:number):Promise<User>{
+        return await this.userRepository.getUserById(id);
     }
     
 }
