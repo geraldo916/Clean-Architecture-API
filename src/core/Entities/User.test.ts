@@ -5,39 +5,23 @@ import User from "./User";
 
 describe("ChackUseCasesUser",()=>{
     const userReposiroty = new UserRepositoryMemory()
+    const getUser = new GetUser(userReposiroty);
+    const saveUser = new SaveUser(userReposiroty);
+
     it("Should save an user",()=>{
-        const saveUser = new SaveUser(userReposiroty);
-        const newUser = new User(2,"geraldo munhika","geraldo00","geraldo@gmail.com","geraldo916");
+        const newUser = new User(2,"geraldo munhika","geraldo00","geraldo@gmail.com","geraldo916", 2);
         expect(userReposiroty.myUsers.length).toBe(0);
         saveUser.run(newUser);
         expect(userReposiroty.myUsers.length).toBe(1);
     })
 
     it("Should return an user",async ()=>{
-        const getUser = new GetUser(userReposiroty);
         const user = await getUser.getUserById(2)
         expect(user.name).toBe("geraldo munhika")
-        
+    })
+
+    it("Should return a cople of users",async()=>{
+        const users = await getUser.getUsers()
+        expect(users.length).toBe(1);
     })
 })
-/*
-test("Should save an user",()=>{
-    const userReposiroty = new UserRepositoryMemory()
-    const saveUser = new SaveUser(userReposiroty);
-    const newUser = new User(2,"geraldo munhika","geraldo00","geraldo@gmail.com","geraldo916");
-    expect(userReposiroty.myUsers.length).toBe(0);
-    saveUser.run(newUser);
-    expect(userReposiroty.myUsers.length).toBe(1);
-})
-
-test("Should return an user",async ()=>{
-    const userReposiroty = new UserRepositoryMemory()
-    const saveUser = new SaveUser(userReposiroty);
-    const newUser = new User(2,"geraldo munhika","geraldo00","geraldo@gmail.com","geraldo916");
-    saveUser.run(newUser);
-    
-    const getUser = new GetUser(userReposiroty);
-    const user = await getUser.getUserById(2)
-    expect(user.name).toBe("geraldo munhika")
-    
-})*/
