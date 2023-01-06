@@ -7,13 +7,13 @@ export default class SaveUser{
     constructor(userRepository:UserRepository){
         this.userRepository = userRepository;
     }
-    run(user:User):void{
+    async run(user:User):Promise<void>{
         for(let myUser of this.userRepository.myUsers){
             if(myUser.email == user.email || myUser.usuario == user.usuario){
                 throw new Error("User name or email exists already");
             }
         }
-        this.userRepository.save(user);
+        await this.userRepository.save(user);
     }
 }
 

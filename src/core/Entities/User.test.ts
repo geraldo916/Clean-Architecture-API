@@ -1,18 +1,21 @@
 import UserRepositoryMemory from "../../infra/repositories/userRepositoryMemory"
 import GetUser from "../usecases/GetUser";
+import { HashPasswordWithBcrypt } from "../usecases/PasswordEncryption";
 import SaveUser from "../usecases/SaveUser"
 import UpdateUser from "../usecases/UpdateUser";
 import User from "./User";
+import bcrypt from 'bcrypt'
 
 describe("ChackUseCasesUser",()=>{
-    const userReposiroty = new UserRepositoryMemory()
+    const hashEncrypt = new HashPasswordWithBcrypt()
+    const userReposiroty = new UserRepositoryMemory(hashEncrypt)
     const getUser = new GetUser(userReposiroty);
     const saveUser = new SaveUser(userReposiroty);
 
-    it("Should save an user",()=>{
+    it("Should save an user",async ()=>{
         const newUser = new User(2,"geraldo munhika","geraldo00","geraldo@gmail.com","geraldo916", 2);
         expect(userReposiroty.myUsers.length).toBe(0);
-        saveUser.run(newUser);
+        await saveUser.run(newUser);
         expect(userReposiroty.myUsers.length).toBe(1);
     })
 
@@ -35,4 +38,11 @@ describe("ChackUseCasesUser",()=>{
         expect(userFound.name).toBe("Samuel Albino")
     })
 
+    it("Should return a Hash",async ()=>{
+        const newUser = new User(2,"geraldo Samuel","geraldo00","geraldo@gmail.com","geraldo916", 2);
+        const userFound = await getUser.getUserById(2)
+        expect(true).toBe(await bcrypt.compare(newUser.password,userFound.password));
+    })
+
 })
+
