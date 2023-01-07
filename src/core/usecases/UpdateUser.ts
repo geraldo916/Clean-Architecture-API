@@ -1,4 +1,4 @@
-import User from "../Entities/User";
+import User from "../Entity/User";
 import UserRepository from "../repositories/UserRepository";
 
 export default class UpdateUser {

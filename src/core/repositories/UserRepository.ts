@@ -1,4 +1,4 @@
-import User from "../Entities/User";
+import User from "../Entity/User";
 
 export default interface UserRepository{
     myUsers: User[];

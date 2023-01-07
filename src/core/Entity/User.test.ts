@@ -44,5 +44,11 @@ describe("ChackUseCasesUser",()=>{
         expect(true).toBe(await bcrypt.compare(newUser.password,userFound.password));
     })
 
+    it("Should delete one user",()=>{
+        let myUserQuantity = userReposiroty.myUsers.length
+        userReposiroty.delete(2);
+        expect(userReposiroty.myUsers.length).toBe(myUserQuantity-1);
+    })
+
 })
 

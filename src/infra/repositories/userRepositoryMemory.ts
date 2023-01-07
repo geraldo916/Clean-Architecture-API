@@ -1,4 +1,4 @@
-import User from "../../core/Entities/User";
+import User from "../../core/Entity/User";
 import UserRepository from "../../core/repositories/UserRepository";
 import {passwordEncryption} from "../../core/usecases/PasswordEncryption"
 
@@ -30,7 +30,8 @@ export default class UserRepositoryMemory implements UserRepository{
     }
 
     delete(id: number): void {
-        
+        const newUsers = this.myUsers.filter(user => user._id !== id);
+        this.myUsers = newUsers;
     }
     
 }

@@ -1,4 +1,4 @@
-import User from "../../core/Entities/User";
+import User from "../Entity/User";
 import UserRepository from "../repositories/UserRepository";
 
 export default class GetUser{
