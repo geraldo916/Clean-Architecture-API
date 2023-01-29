@@ -1,9 +1,10 @@
-import UserRepositoryMemory from "../../infra/repositories/userRepositoryMemory"
-import GetUser from "../usecases/GetUser";
-import { HashPasswordWithBcrypt } from "../usecases/PasswordEncryption";
-import SaveUser from "../usecases/SaveUser"
-import UpdateUser from "../usecases/UpdateUser";
-import User from "./User";
+import UserRepositoryMemory from "../src/infra/repositories/userRepositoryMemory"
+import GetUser from "../src/core/usecases/GetUser";
+import HashPasswordWithBcrypt from "../src/adapters/bcryptAdapter";
+import SaveUser from "../src/core/usecases/SaveUser"
+import UpdateUser from "../src/core/usecases/UpdateUser";
+import DeleteUser from "../src/core/usecases/DeleteUser";
+import User from "../src/core/Entity/User";
 import bcrypt from 'bcrypt'
 
 describe("ChackUseCasesUser",()=>{
@@ -11,6 +12,7 @@ describe("ChackUseCasesUser",()=>{
     const userReposiroty = new UserRepositoryMemory(hashEncrypt)
     const getUser = new GetUser(userReposiroty);
     const saveUser = new SaveUser(userReposiroty);
+    const deleUser = new DeleteUser(userReposiroty);
 
     it("Should save an user",async ()=>{
         const newUser = new User(2,"geraldo munhika","geraldo00","geraldo@gmail.com","geraldo916", 2);
@@ -46,7 +48,7 @@ describe("ChackUseCasesUser",()=>{
 
     it("Should delete one user",()=>{
         let myUserQuantity = userReposiroty.myUsers.length
-        userReposiroty.delete(2);
+        deleUser.run(2)
         expect(userReposiroty.myUsers.length).toBe(myUserQuantity-1);
     })
 

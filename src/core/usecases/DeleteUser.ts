@@ -4,7 +4,7 @@ export default class DeleteUser{
 
     constructor(private readonly userRepository:UserRepository){}
 
-    delete(id:number){
-        
+    run(id:number):void{
+        this.userRepository.delete(id);   
     }
 }
