@@ -7,4 +7,5 @@ export default interface UserRepository{
     update(user:User):void;
     getAllUsers(): Promise<User[]>;
     getUserById(id:number): Promise<User>;
+    getUserByEmail(email:string): Promise<User>;
 }

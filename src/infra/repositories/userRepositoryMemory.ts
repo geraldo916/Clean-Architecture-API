@@ -1,6 +1,6 @@
 import User from "../../core/Entity/User";
 import UserRepository from "../../core/repositories/UserRepository";
-import {passwordEncryption} from "../../core/usecases/PasswordEncryption"
+import passwordEncryption from "../../core/protocols/criptography/PasswordEncryption"
 
 export default class UserRepositoryMemory implements UserRepository{
 
@@ -32,6 +32,10 @@ export default class UserRepositoryMemory implements UserRepository{
     delete(id: number): void {
         const newUsers = this.myUsers.filter(user => user._id !== id);
         this.myUsers = newUsers;
+    }
+
+    getUserByEmail(email: string): Promise<User> {
+        return Promise.resolve(this.myUsers.find(user => user.email === email))
     }
     
 }
