@@ -1,7 +1,7 @@
 import User from "../Entity/User";
-import  passwordEncryption  from "../../../criptography/PasswordEncryption";
+import  passwordEncryption  from "../protocols/criptography/PasswordEncryption";
 import UserRepository from "../repositories/UserRepository";
-import TokenGenerator from "../../../criptography/TokenGenerator";
+import TokenGenerator from "../protocols/criptography/TokenGenerator";
 
 export default class Login{
     constructor(private readonly passwordEncript:passwordEncryption,

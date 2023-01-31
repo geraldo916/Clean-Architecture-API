@@ -1,6 +1,6 @@
 import User from "../../core/Entity/User";
 import UserRepository from "../../core/repositories/UserRepository";
-import passwordEncryption from "../../../criptography/PasswordEncryption"
+import passwordEncryption from "../../core/protocols/criptography/PasswordEncryption"
 
 export default class UserRepositoryMemory implements UserRepository{
 
