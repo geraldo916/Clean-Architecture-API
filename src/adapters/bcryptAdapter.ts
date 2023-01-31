@@ -1,5 +1,5 @@
 import bcrypt from 'bcrypt'; 
-import { passwordEncryption } from '../core/usecases/PasswordEncryption';
+import  passwordEncryption  from '../../criptography/PasswordEncryption';
 
 
 export default class HashPasswordWithBcrypt implements passwordEncryption {
