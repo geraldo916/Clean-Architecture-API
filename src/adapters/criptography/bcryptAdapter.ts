@@ -9,7 +9,7 @@ export default class HashPasswordWithBcrypt implements passwordEncryption {
     }
 
     async compare(password: string, hash: string): Promise<boolean> {
-        const result = bcrypt.compare(password, hash);
+        const result = await bcrypt.compare(password, hash);
         return result;
     }
 

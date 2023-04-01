@@ -4,9 +4,11 @@ import UpdateUser from "../src/core/usecases/UpdateUser";
 import DeleteUser from "../src/core/usecases/DeleteUser";
 import User from "../src/core/Entity/User";
 import bcrypt from 'bcrypt'
-import Login from "../src/core/usecases/Login";
+import Login from "../src/core/usecases/Authentication";
 import JwtAdapter from "../src/adapters/criptography/jwt-adapter";
 import HashPasswordWithBcrypt from "../src/adapters/criptography/bcryptAdapter";
+import PasswordRecovery from "../src/core/usecases/PasswordRecovery";
+import ChangePassword from "../src/core/usecases/ChangePassword";
 
 const secret = "agsdhkgshkdghagsdegugaklgdsal";
 
@@ -17,6 +19,8 @@ describe("ChackUseCasesUser",()=>{
     const deleUser = new DeleteUser(userReposiroty);
     const authJwt = new JwtAdapter(secret);
     const userLogin = new Login(hashEncrypt,userReposiroty,authJwt);
+    const passwordRecovery = new PasswordRecovery(authJwt,userReposiroty);
+    const changePassword = new ChangePassword(userReposiroty,authJwt);
 
     it("Should save an user",async ()=>{
         const newUser = new User(2,"geraldo munhika","geraldo00","geraldo@gmail.com","geraldo916", 2);
@@ -24,7 +28,6 @@ describe("ChackUseCasesUser",()=>{
         await saveUser.run(newUser);
         expect(userReposiroty.myUsers.length).toBe(1);
     })
-
     it("Should return an user",async ()=>{
         const user = await userReposiroty.getUserById(2)
         expect(user.name).toBe("geraldo munhika")
@@ -56,7 +59,7 @@ describe("ChackUseCasesUser",()=>{
         expect(userReposiroty.myUsers.length).toBe(myUserQuantity-1);
     })
 
-    it("Shoudl return a user payload",async ()=>{
+    it("Should return a user payload",async ()=>{
        const newUser = new User(2,"geraldo munhika","geraldo00","geraldo@gmail.com","geraldo916", 2);
        await saveUser.run(newUser);
 
@@ -64,6 +67,18 @@ describe("ChackUseCasesUser",()=>{
        const payload = await authJwt.decrypt(token)
        expect(payload.id_user).toBe(2);
     })
+    it("Should create a recovery password token",async()=>{
+        const token = await passwordRecovery.execute('geraldo@gmail.com');
+        const tokenData = await authJwt.decrypt(token);
+        expect(tokenData.email).toBe('geraldo@gmail.com')
+    })
+    it("Should change the password",async ()=>{
+        const tokenData = await passwordRecovery.execute('geraldo@gmail.com');
+        await changePassword.run({token:tokenData,newPassword:"geraldooo"});
 
+        const token = await userLogin.run({password:"geraldooo",email:"geraldo@gmail.com"});
+        const payload = await authJwt.decrypt(token)
+        expect(payload.id_user).toBe(2);
+    })
 })
 

@@ -1,12 +1,13 @@
 import User from "../../core/Entity/User";
 import UserRepository from "../../core/repositories/UserRepository";
 import passwordEncryption from "../../core/protocols/criptography/PasswordEncryption"
+import { UserInfo } from "../../core/Entity/User";
 
 export default class UserRepositoryMemory implements UserRepository{
 
     constructor(private readonly passwordEncyption:passwordEncryption){}
-
-    myUsers: User[] = [];
+    
+    myUsers = [];
 
     getAllUsers(): Promise<User[]> {
         return Promise.resolve(this.myUsers);
@@ -20,12 +21,11 @@ export default class UserRepositoryMemory implements UserRepository{
         this.myUsers.push(user);
     }
     
-    async update(user: User){
-        const userFound = this.myUsers.find(u => u._id == user._id);
+    async update(user:UserInfo){
+        const userFound = this.myUsers.find(u => u.email == user.email);
         userFound.name = user.name;
         userFound.email = user.email;
-        userFound.password = await this.passwordEncyption.run(user.password);
-        userFound.usuario = user.usuario;
+        userFound.user = user.user;
         userFound.role = user.role;
     }
 
@@ -36,6 +36,11 @@ export default class UserRepositoryMemory implements UserRepository{
 
     getUserByEmail(email: string): Promise<User> {
         return Promise.resolve(this.myUsers.find(user => user.email === email))
+    }
+
+    async changePassword(newPassword: string,email:string): Promise<void> {
+        const userFound = this.myUsers.find(user => user.email === email);
+        userFound.password = await this.passwordEncyption.run(newPassword);
     }
     
 }
