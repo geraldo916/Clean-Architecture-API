@@ -15,7 +15,7 @@ export default class Login{
         const passwordVerification = await this.passwordEncript.compare(password,user.password);
         if(!passwordVerification) throw new Error("Incorrect Password");
 
-        return this.tokenGenerator.encrypt({id_user:user._id,usuario:user.usuario,email:user.email,name:user.name,role:user.role});
+        return this.tokenGenerator.encrypt({id_user:user._id,usuario:user.user,email:user.email,name:user.name,role:user.role});
     }
 
 }
