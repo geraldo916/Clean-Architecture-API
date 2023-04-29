@@ -1,6 +1,5 @@
 import User,{UserInfo} from "../Entity/User";
 
-
 export default interface UserRepository{
     save(user:User):Promise<void>;
     delete(id:any):Promise<void>;
