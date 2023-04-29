@@ -8,5 +8,5 @@ export default interface UserRepository{
     getAllUsers(): Promise<User[]>;
     getUserById(id:any): Promise<User>;
     getUserByEmail(email:string): Promise<User>;
-    changePassword(newPassword:string,email:string):void
+    changePassword(id:any,newPassword:string):void
 }
