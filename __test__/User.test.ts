@@ -8,7 +8,7 @@ import Login from "../src/core/usecases/Authentication";
 import JwtAdapter from "../src/adapters/criptography/jwt-adapter";
 import HashPasswordWithBcrypt from "../src/adapters/criptography/bcryptAdapter";
 import PasswordRecovery from "../src/core/usecases/PasswordRecovery";
-import ChangePassword from "../src/core/usecases/ChangePassword";
+import ChangePassword from "../src/core/usecases/ChangePasswordRecovery";
 
 const secret = "agsdhkgshkdghagsdegugaklgdsal";
 
