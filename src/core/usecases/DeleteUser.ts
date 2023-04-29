@@ -4,7 +4,7 @@ export default class DeleteUser{
 
     constructor(private readonly userRepository:UserRepository){}
 
-    run(id:number):void{
-        this.userRepository.delete(id);   
+    async run(id:number):Promise<void>{
+        await this.userRepository.delete(id);   
     }
 }

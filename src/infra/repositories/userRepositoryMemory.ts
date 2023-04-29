@@ -5,9 +5,31 @@ import { UserInfo } from "../../core/Entity/User";
 
 export default class UserRepositoryMemory implements UserRepository{
 
-    constructor(private readonly passwordEncyption:passwordEncryption){}
+    //constructor(private readonly passwordEncyption:passwordEncryption){}
     
-    myUsers = [];
+    save(user: User): Promise<void> {
+        throw new Error("Method not implemented.");
+    }
+    delete(id: any): Promise<void> {
+        throw new Error("Method not implemented.");
+    }
+    update(id: any, user: UserInfo): Promise<void> {
+        throw new Error("Method not implemented.");
+    }
+    getAllUsers(): Promise<User[]> {
+        throw new Error("Method not implemented.");
+    }
+    getUserById(id: any): Promise<User> {
+        throw new Error("Method not implemented.");
+    }
+    getUserByEmail(email: string): Promise<User> {
+        throw new Error("Method not implemented.");
+    }
+    changePassword(id: any, newPassword: string): Promise<void> {
+        throw new Error("Method not implemented.");
+    }
+    
+    /*myUsers = [];
 
     getAllUsers(): Promise<User[]> {
         return Promise.resolve(this.myUsers);
@@ -41,6 +63,6 @@ export default class UserRepositoryMemory implements UserRepository{
     async changePassword(newPassword: string,email:string): Promise<void> {
         const userFound = this.myUsers.find(user => user.email === email);
         userFound.password = await this.passwordEncyption.run(newPassword);
-    }
+    }*/
     
 }
