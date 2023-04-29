@@ -1,11 +1,11 @@
 export default class User{
-    public _id: number;
+    public _id: string;
     name: string;
     password: string;
     email: string;
     user: string;
     role: number;
-    constructor(id:number,name:string,password:string,email:string,user:string, role:number){
+    constructor(id:string,name:string,password:string,email:string,user:string, role:number){
         this._id = id;
         this.name = name;
         this.password = password;
@@ -20,5 +20,5 @@ export type UserInfo={
     name:string,
     email:string,
     user:string,
-    role:number
+    role:number,
 }
