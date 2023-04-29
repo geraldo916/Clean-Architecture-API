@@ -4,7 +4,7 @@ import UserRepository from "../repositories/UserRepository";
 export default class UpdateUser {
     constructor(private readonly userRepository:UserRepository){}
 
-    update(user:UserInfo):void{
-        this.userRepository.update(user);
+    async update(id:any,user:UserInfo):Promise<void>{
+        await this.userRepository.update(id,user);
     }
 }

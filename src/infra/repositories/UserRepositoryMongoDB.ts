@@ -10,7 +10,7 @@ connection();
 export default class UserRepositoryMongoDB implements UserRepository{
 
     async save(user: User): Promise<void> {
-        const newUser = new Users({...user});
+        const newUser = new Users({name:user.name,email:user.email,user:user.user,password:user.password,role:user.role});
         await newUser.save();
     }
     async delete(id: number): Promise<void> {

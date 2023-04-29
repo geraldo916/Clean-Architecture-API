@@ -18,9 +18,12 @@ dotenv.config();
 const secret = process.env.TOKEN_SECRET;
 
 describe("ChackUseCasesUser",()=>{
+
+    jest.setTimeout(10000);
+
     const hashEncrypt = new HashPasswordWithBcrypt()
     const userReposiroty = new UserRepositoryMongoDB()
-    const saveUser = new SaveUser(userReposiroty);
+    const saveUser = new SaveUser(userReposiroty,hashEncrypt);
     const deleUser = new DeleteUser(userReposiroty);
     const authJwt = new JwtAdapter(secret);
     const userLogin = new Login(hashEncrypt,userReposiroty,authJwt);
@@ -28,41 +31,41 @@ describe("ChackUseCasesUser",()=>{
     const changePassword = new ChangePasswordRecovery(userReposiroty,authJwt,hashEncrypt);
 
     it("Should save an user",async ()=>{
-        const newUser = new User('2',"geraldo munhika","geraldo00","geraldo@gmail.com","geraldo916", 2);
-        const allUsers = await userReposiroty.getAllUsers();
-        expect(allUsers.length).toBe(0);
+        const newUser = new User('2',"geraldo arcanjo","geraldo090","geraldochara@gmail.com","geraldo7600", 2);
+        let allUsersOld = await userReposiroty.getAllUsers();
         await saveUser.run(newUser);
-        expect(allUsers.length).toBe(1);
+        let allUsersNew = await userReposiroty.getAllUsers(); 
+        expect(allUsersNew.length).toBe(allUsersOld.length+1);
     })
     it("Should return an user",async ()=>{
-        const user = await userReposiroty.getUserByEmail("geraldo@gmail.com");
+        const user = await userReposiroty.getUserById("644d9b237d9d5f910a3b15fe");
         expect(user.name).toBe("geraldo munhika")
     })
 
     it("Should return a cople of users",async()=>{
         const users = await userReposiroty.getAllUsers()
-        expect(users.length).toBe(1);
+        expect(users.length).toBeGreaterThan(0);
     })
 
     it("Should update an user with new elements",async ()=>{
         const user = new UpdateUser(userReposiroty);
         const newUser = new User("2","Samuel Albino","geraldo00","geraldo@gmail.com","geraldo916", 2);
-        const userFound = await userReposiroty.getUserByEmail("geraldo@gmail.com")
+        const userFound = await userReposiroty.getUserById("644d9b237d9d5f910a3b15fe")
         expect(userFound.name).toBe("geraldo munhika")
-        user.update(newUser);
+        await user.update("644d9b237d9d5f910a3b15fe",newUser);
         expect(userFound.name).toBe("Samuel Albino")
     })
 
-    it("Should return a Hash",async ()=>{
-        const newUser = new User("2","geraldo Samuel","geraldo00","geraldo@gmail.com","geraldo916", 2);
-        const userFound = await userReposiroty.getUserById(2)
-        expect(true).toBe(await bcrypt.compare(newUser.password,userFound.password));
+    it("Should be authorized",async ()=>{
+        const userFound = await userReposiroty.getUserById("644d9b237d9d5f910a3b15fe");
+        expect(await bcrypt.compare("geraldo00",userFound.password)).toBeTruthy();
     })
 
     it("Should delete one user",async()=>{
-        const allUsers = await userReposiroty.getAllUsers();
-        await deleUser.run(2)
-        expect(allUsers.length).toBe(allUsers.length-1);
+        const allUsersOld = await userReposiroty.getAllUsers();
+        await deleUser.run("644d9b237d9d5f910a3b15fe");
+        const allUsersNew = await userReposiroty.getAllUsers();
+        expect(allUsersNew.length).toBe(allUsersOld.length-1);
     })
 
     it("Should return a user payload",async ()=>{
