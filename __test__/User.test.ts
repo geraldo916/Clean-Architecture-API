@@ -38,7 +38,7 @@ describe("ChackUseCasesUser",()=>{
         expect(allUsersNew.length).toBe(allUsersOld.length+1);
     })
     it("Should return an user",async ()=>{
-        const user = await userReposiroty.getUserById("644d9b237d9d5f910a3b15fe");
+        const user = await userReposiroty.getUserByEmail("geraldochara@gmail.com");
         expect(user.name).toBe("geraldo munhika")
     })
 
@@ -50,20 +50,21 @@ describe("ChackUseCasesUser",()=>{
     it("Should update an user with new elements",async ()=>{
         const user = new UpdateUser(userReposiroty);
         const newUser = new User("2","Samuel Albino","geraldo00","geraldo@gmail.com","geraldo916", 2);
-        const userFound = await userReposiroty.getUserById("644d9b237d9d5f910a3b15fe")
+        const userFound = await userReposiroty.getUserByEmail("geraldochara@gmail.com")
         expect(userFound.name).toBe("geraldo munhika")
-        await user.update("644d9b237d9d5f910a3b15fe",newUser);
+        await user.update(userFound._id,newUser);
         expect(userFound.name).toBe("Samuel Albino")
     })
 
     it("Should be authorized",async ()=>{
-        const userFound = await userReposiroty.getUserById("644d9b237d9d5f910a3b15fe");
+        const userFound = await userReposiroty.getUserByEmail("geraldochara@gmail.com");
         expect(await bcrypt.compare("geraldo00",userFound.password)).toBeTruthy();
     })
 
     it("Should delete one user",async()=>{
         const allUsersOld = await userReposiroty.getAllUsers();
-        await deleUser.run("644d9b237d9d5f910a3b15fe");
+        const user = await userRepository.getUserByEmail("geraldochara@gmail.com");
+        await deleUser.run(user._id);
         const allUsersNew = await userReposiroty.getAllUsers();
         expect(allUsersNew.length).toBe(allUsersOld.length-1);
     })
